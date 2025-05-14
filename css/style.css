@@ -1,4 +1,4 @@
-/* Reset & centering */
+/* css/style.css */
 html, body {
   margin: 0; padding: 0;
   width: 100vw; height: 100vh;
@@ -7,7 +7,6 @@ html, body {
   overflow: hidden;
 }
 
-/* Phone shell */
 .phone-frame {
   box-sizing: border-box;
   width: 90vw; max-width: 360px;
@@ -20,13 +19,11 @@ html, body {
 }
 
 .phone-screen {
-  position: relative;
   width: 100%; height: 100%;
   background: #121212;
   display: flex; flex-direction: column;
 }
 
-/* Nav grid */
 .nav-grid {
   display: grid;
   grid-template-columns: repeat(3,1fr);
@@ -48,9 +45,6 @@ html, body {
   font-size: 40px; line-height: 1;
 }
 
-/* Game frame */
 #game-frame {
-  flex: 1;
-  width: 100%;
-  border: none;
+  flex: 1; width: 100%; border: none;
 }
