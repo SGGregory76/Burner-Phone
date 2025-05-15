@@ -10,76 +10,89 @@
     html, body {
       width: 100vw; height: 100vh;
       display: flex; align-items: center; justify-content: center;
-      background: #111;
+      background: #000; /* deeper background */
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
     }
 
-    /* Phone Frame: fixed phone dimensions */
+    /* Phone Frame with contrast bezel */
     .phone-frame {
-      width: 360px;  /* fixed width */
-      height: 640px; /* fixed height */
-      background: #333;
-      border: 12px solid #222;
-      border-top-color: #111;
-      border-radius: 36px;
-      box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+      width: 360px;
+      height: 640px;
+      background: #222; /* darker frame */
+      border: 14px solid #444; /* lighter border for contrast */
+      border-radius: 40px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.8);
       display: grid;
       grid-template-rows: auto 1fr;
       position: relative;
       overflow: hidden;
     }
 
-    /* Speaker cutout */
+    /* Speaker notch highlight */
     .phone-frame::before {
       content: '';
       position: absolute;
-      top: 12px;  /* inside bezel */
+      top: 12px;
       left: 50%; transform: translateX(-50%);
-      width: 60px; height: 6px;
-      background: #444;
-      border-radius: 3px;
+      width: 64px; height: 8px;
+      background: #666; /* more distinct speaker */
+      border-radius: 4px;
       z-index: 2;
     }
 
     /* Top Navigation Bar */
     .nav {
-      background: #1e1e1e;
+      background: #1a1a1a; /* higher contrast */
       display: grid;
       grid-template-columns: repeat(3,1fr);
-      gap: 8px;
-      padding: 16px 12px;
+      gap: 12px;
+      padding: 16px;
       z-index: 1;
+      border-bottom: 2px solid #444;
     }
     .nav button {
-      background: #2a2a2a;
-      border: none;
-      border-radius: 12px;
-      padding: 12px;
+      background: #333;
+      border: 2px solid #555;
+      border-radius: 14px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       color: #fff;
       cursor: pointer;
-      transition: background .2s;
+      transition: background .2s, border-color .2s;
     }
     .nav button:hover {
-      background: #3a3a3a;
+      background: #444;
+      border-color: #0af;
+      color: #0af;
     }
-    .nav .icon { font-size: 32px; line-height: 1; }
-    .nav .label { margin-top: 4px; font-size: 12px; }
+    .nav .icon { font-size: 36px; line-height: 1; }
+    .nav .label { margin-top: 6px; font-size: 14px; }
 
     /* Screen Area */
     .screen {
-      background: #121212;
+      background: #000; /* deep black screen */
       display: flex;
       flex-direction: column;
+      padding: 4px; /* bezel padding */
+    }
+    .screen::before {
+      content: '';
+      position: absolute;
+      bottom: 12px; left: 50%; transform: translateX(-50%);
+      width: 80px; height: 6px;
+      background: #666;
+      border-radius: 3px;
     }
     iframe {
       flex: 1;
       width: 100%; height: 100%;
       border: none;
+      border-radius: 8px; /* slight rounding inside screen */
+      background: #000;
     }
   </style>
 </head>
