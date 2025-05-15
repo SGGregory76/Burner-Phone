@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Inventory</title>
+  <title>Inventory 🎒</title>
   <style>
     html, body {
-      margin: 0; padding: 16px;
+      margin: 0;
+      padding: 16px;
       width: 100%; height: 100%;
       background: #000;
       color: #fff;
@@ -28,72 +29,62 @@
       border-radius: 12px;
       padding: 12px;
       text-align: center;
-      transition: background 0.2s;
       cursor: default;
+      transition: background 0.2s;
     }
     .card:hover {
       background: #222;
     }
-    .card .icon {
+    .icon {
       font-size: 24px;
       margin-bottom: 8px;
       display: block;
     }
-    .card .name {
+    .name {
       font-size: 14px;
       color: #ccc;
       margin-bottom: 4px;
     }
-    .card .qty {
+    .qty {
       font-size: 12px;
       color: #0ff;
     }
   </style>
 </head>
 <body>
-
   <h1>Inventory 🎒</h1>
   <div class="grid" id="inventory"></div>
 
   <script>
     (async () => {
-      // Fetch game-data.json from your GitHub repo via jsDelivr
-      const resp = await fetch('https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/game-data.json');
-      const game = await resp.json();
-      // Expecting game.player.inventory to be an object of itemKey→quantity or an array
-      const invData = game.player.inventory || {};
-      const grid = document.getElementById('inventory');
+      const url = `https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/game-data.json?cb=${Date.now()}`;
+      try {
+        const resp = await fetch(url);
+        const game = await resp.json();
+        const invData = game.player.inventory || {};
+        const grid = document.getElementById('inventory');
 
-      // If inventory is an array of objects
-      if (Array.isArray(invData)) {
-        invData.forEach(item => {
-          renderItem(item.name, item.qty || 1);
-        });
-      } else {
-        // If inventory is a map: { itemKey: qty, ... }
-        Object.entries(invData).forEach(([key, qty]) => {
-          renderItem(key, qty);
-        });
-      }
+        Object.entries(invData).forEach(([name, qty]) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          // determine icon
+          let icon = '📦';
+          if (/bar|candy/i.test(name)) icon = '🍫';
+          else if (/drink|coffee/i.test(name)) icon = '🥤';
+          else if (/lighter/i.test(name)) icon = '🔥';
+          else if (/key/i.test(name)) icon = '🔑';
 
-      function renderItem(name, qty) {
-        const card = document.createElement('div');
-        card.className = 'card';
-        // Try to guess an emoji/icon based on name
-        let icon = '📦';
-        if (/bar|candy/i.test(name)) icon = '🍫';
-        else if (/drink|coffee/i.test(name)) icon = '🥤';
-        else if (/key/i.test(name)) icon = '🔑';
-        card.innerHTML = `
-          <span class="icon">${icon}</span>
-          <div class="name">${name}</div>
-          <div class="qty">x${qty}</div>
-        `;
-        grid.appendChild(card);
+          card.innerHTML = `
+            <span class="icon">${icon}</span>
+            <div class="name">${name}</div>
+            <div class="qty">x${qty}</div>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (e) {
+        console.error('Error loading inventory:', e);
       }
     })();
   </script>
-
 </body>
 </html>
-
