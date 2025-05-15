@@ -84,12 +84,13 @@
     .nav .icon { font-size: 32px; line-height: 1; }
     .nav .label { margin-top: 4px; font-size: 12px; }
     .screen {
-      background: #000;
+      position: relative;
+      flex: 1;
+      /* Remove background fill to show bezel edges */
+      background: transparent;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
     }
     .page-title {
       background: rgba(30,30,30,0.8);
