@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Contacts</title>
+  <style>
+    body {
+      margin:0; padding:16px;
+      background:#121212; color:#fff;
+      font-family:'Segoe UI', sans-serif;
+    }
+    h1 { text-align:center; margin-bottom:24px; }
+    .grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+      gap:16px;
+    }
+    .card {
+      background:#1e1e1e;
+      border-radius:12px;
+      padding:12px;
+      cursor:pointer;
+      transition:background .2s;
+    }
+    .card:hover { background:#2a2a2a; }
+    .card .name { font-size:16px; margin-bottom:8px; }
+    /* Modal overlay */
+    .modal-backdrop {
+      position: fixed; top:0; left:0; right:0; bottom:0;
+      background:rgba(0,0,0,0.8);
+      display:flex; justify-content:center; align-items:center;
+      z-index:10; visibility:hidden;
+    }
+    .modal {
+      background:#222; border-radius:12px;
+      width:90%; max-width:320px; padding:16px;
+      color:#fff; position:relative;
+    }
+    .modal h2 { margin-top:0; }
+    .close {
+      position:absolute; top:8px; right:8px;
+      background:transparent; border:none;
+      color:#fff; font-size:24px; cursor:pointer;
+    }
+    .actions button {
+      width:100%; padding:10px; margin-top:8px;
+      background:#444; border:none; border-radius:8px;
+      color:#fff; cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Contacts</h1>
+  <div class="grid" id="contacts"></div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <button class="close" id="close">×</button>
+      <h2 id="mn"></h2>
+      <p><strong>Mood:</strong> <span id="mm"></span></p>
+      <p><strong>Prefers:</strong> <span id="mp"></span></p>
+      <p id="mb"></p>
+      <div class="actions">
+        <button id="buy">Buy</button>
+        <button id="sell">Sell</button>
+        <button id="give">Give</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (async()=>{
+      // Load NPC data
+      const resp = await fetch('https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/npcs.json');
+      const npcs = await resp.json();
+
+      const grid = document.getElementById('contacts');
+      Object.entries(npcs).forEach(([key, npc])=>{
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<div class="name">${npc.displayName}</div>`;
+        card.onclick = ()=>{
+          document.getElementById('mn').textContent = npc.displayName;
+          document.getElementById('mm').textContent = npc.initialMood;
+          document.getElementById('mp').textContent = npc.drugPreferences.join(', ');
+          document.getElementById('mb').textContent = npc.behavior;
+          document.getElementById('modal').style.visibility = 'visible';
+        };
+        grid.appendChild(card);
+      });
+
+      // Modal close
+      document.getElementById('close').onclick = ()=> {
+        document.getElementById('modal').style.visibility = 'hidden';
+      };
+      // Stub actions
+      ['buy','sell','give'].forEach(id=>
+        document.getElementById(id).onclick = ()=>alert(id+' action')
+      );
+    })();
+  </script>
+</body>
+</html>
