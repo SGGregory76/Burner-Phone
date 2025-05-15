@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Burner Phone v1 (Debug)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Burner Phone v1</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
@@ -15,61 +15,80 @@
       width: 360px; height: 640px;
       background: #222; border: 16px solid #444; border-radius: 40px;
       box-shadow: 0 16px 48px rgba(0,0,0,0.8);
-      display: grid; grid-template-rows: auto 1fr; position: relative;
+      display: grid; grid-template-rows: auto auto 1fr;
+      overflow: hidden;
     }
-    .debug {
-      background: #111; color: #0f0; padding: 4px 8px;
-      font-size: 10px; height: 60px; overflow-y: auto;
+    .title-bar { background: #111; text-align: center; padding: 6px 0; color: #0af; font-size: 16px; border-bottom: 2px solid #444; }
+    /* Navigation icons */
+    .nav { background: #1e1e1e; display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; padding: 8px; border-bottom: 2px solid #444; }
+    .nav button {
+      background: #333; border: 1px solid #555; border-radius: 12px; padding: 8px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #fff; cursor: pointer; transition: background .2s, border-color .2s;
     }
-    .screen {
-      position: relative; flex: 1; background: #000;
-      display: flex; flex-direction: column;
-    }
-    iframe { flex: 1; width: 100%; border: none; }
+    .nav button:hover { background: #444; border-color: #0af; color: #0af; }
+    .nav .icon { font-size: 24px; }
+    .nav .label { margin-top: 2px; font-size: 10px; }
+    .screen { background: #000; display: flex; flex-direction: column; overflow: hidden; }
+    .stats { display: flex; justify-content: space-around; background: #1e1e1e; padding: 4px 0; border-bottom: 2px solid #444; }
+    .stat { text-align: center; color: #fff; }
+    .stat .label { font-size: 10px; color: #0af; }
+    .stat .value { font-size: 14px; }
+    iframe { flex: 1; width: 100%; height: 100%; border: none; }
   </style>
 </head>
 <body>
   <div class="phone-frame">
-    <div class="debug" id="debug">Debug log:<br></div>
+    <div class="title-bar">Burner Phone v1</div>
+    <div class="nav">
+      <button onclick="load('missions')"><span class="icon">🎯</span><span class="label">Msns</span></button>
+      <button onclick="load('contacts')"><span class="icon">📇</span><span class="label">Cnts</span></button>
+      <button onclick="load('inventory')"><span class="icon">🎒</span><span class="label">Inv</span></button>
+      <button onclick="load('map')"><span class="icon">🗺️</span><span class="label">Map</span></button>
+      <button onclick="load('log')"><span class="icon">📜</span><span class="label">Log</span></button>
+      <button onclick="load('settings')"><span class="icon">⚙️</span><span class="label">Stgs</span></button>
+    </div>
     <div class="screen">
+      <div class="stats">
+        <div class="stat"><div class="label">Cash</div><div class="value" id="stat-cash">0</div></div>
+        <div class="stat"><div class="label">Rep</div><div class="value" id="stat-rep">0</div></div>
+        <div class="stat"><div class="label">Lvl</div><div class="value" id="stat-level">1</div></div>
+      </div>
       <iframe id="game"></iframe>
     </div>
   </div>
 
   <script>
-    const log = msg => {
-      const d = document.getElementById('debug');
-      d.innerHTML += msg.replace(/</g,'&lt;') + '<br>';
-      console.log(msg);
-    };
+    // Fetch and display stats
+    (async()=>{
+      const res = await fetch('https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/game-data.json');
+      const game = await res.json();
+      document.getElementById('stat-cash').textContent = game.player.cash;
+      document.getElementById('stat-rep').textContent = game.player.reputation;
+      document.getElementById('stat-level').textContent = game.player.level;
+    })();
 
+    // Map to Blogger label-search URLs
     const pages = {
-      missions:  'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/missions.html',
-      contacts:  'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/contacts.html',
-      inventory: 'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/inventory.html',
-      map:       'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/maps.html',
-      log:       'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/log.html',
-      settings:  'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/settings.html',
+      missions:  'https://burner-phone.blogspot.com/search/label/missions?max-results=1',
+      contacts:  'https://burner-phone.blogspot.com/search/label/contacts?max-results=1',
+      inventory: 'https://burner-phone.blogspot.com/search/label/inventory?max-results=1',
+      map:       'https://burner-phone.blogspot.com/search/label/map?max-results=1',
+      log:       'https://burner-phone.blogspot.com/search/label/log?max-results=1',
+      settings:  'https://burner-phone.blogspot.com/search/label/settings?max-results=1'
     };
 
     function load(key) {
       const url = pages[key];
-      if (!url) {
-        log(`❌ Unknown page key: ${key}`);
-        return;
-      }
-      log(`→ Loading ${key}: ${url}`);
-      const iframe = document.getElementById('game');
-      iframe.src = url;
-      iframe.onload = () => log(`✅ Loaded ${key}`);
-      iframe.onerror = () => log(`❌ Failed to load ${key}`);
+      if (!url) return;
+      document.getElementById('game').src = url;
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      // read ?m= param or default to missions
+    // Initial load based on ?m= param
+    window.addEventListener('load', ()=>{
       const m = parseInt(new URLSearchParams(location.search).get('m'));
       const keys = Object.keys(pages);
-      const idx = (m >= 1 && m <= keys.length) ? m - 1 : 0;
+      const idx = (m>=1 && m<=keys.length)?m-1:0;
       load(keys[idx]);
     });
   </script>
