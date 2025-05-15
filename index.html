@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Burner Phone v1</title>
   <style>
@@ -76,12 +76,12 @@
   <div class="phone-frame">
     <div class="title-bar">Burner Phone v1</div>
     <div class="nav">
-      <button onclick="load('missions')"><span class="icon">🎯</span><span class="label">Msns</span></button>
-      <button onclick="load('contacts')"><span class="icon">📇</span><span class="label">Cnts</span></button>
-      <button onclick="load('inventory')"><span class="icon">🎒</span><span class="label">Inv</span></button>
+      <button onclick="load('missions')"><span class="icon">🎯</span><span class="label">Missions</span></button>
+      <button onclick="load('contacts')"><span class="icon">📇</span><span class="label">Contacts</span></button>
+      <button onclick="load('inventory')"><span class="icon">🎒</span><span class="label">Inventory</span></button>
       <button onclick="load('map')"><span class="icon">🗺️</span><span class="label">Map</span></button>
       <button onclick="load('log')"><span class="icon">📜</span><span class="label">Log</span></button>
-      <button onclick="load('settings')"><span class="icon">⚙️</span><span class="label">Stgs</span></button>
+      <button onclick="load('settings')"><span class="icon">⚙️</span><span class="label">Settings</span></button>
     </div>
     <div class="screen">
       <div class="stats">
@@ -94,16 +94,20 @@
   </div>
 
   <script>
-    // Fetch and populate stats
+    // Fetch game data and populate stats
     (async () => {
-      const res = await fetch('https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/game-data.json');
-      const game = await res.json();
-      document.getElementById('stat-cash').textContent = game.player.cash;
-      document.getElementById('stat-rep').textContent = game.player.reputation;
-      document.getElementById('stat-level').textContent = game.player.level;
+      try {
+        const res = await fetch('https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/game-data.json');
+        const game = await res.json();
+        document.getElementById('stat-cash').textContent = game.player.cash;
+        document.getElementById('stat-rep').textContent = game.player.reputation;
+        document.getElementById('stat-level').textContent = game.player.level;
+      } catch (e) {
+        console.error('Failed to load game data:', e);
+      }
     })();
 
-    // Map loader to jsDelivr-hosted pages
+    // Page loader mapping
     const pages = {
       missions:  'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/missions.html',
       contacts:  'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/contacts.html',
@@ -113,11 +117,15 @@
       settings:  'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/settings.html'
     };
 
+    // Load function
     function load(key) {
       const url = pages[key];
-      if (url) document.getElementById('game').src = url;
+      if (url) {
+        document.getElementById('game').src = url;
+      }
     }
 
+    // On load, pick first or based on ?m=
     window.addEventListener('load', () => {
       const m = parseInt(new URLSearchParams(location.search).get('m'));
       const keys = Object.keys(pages);
