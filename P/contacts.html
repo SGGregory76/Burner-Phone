@@ -37,12 +37,11 @@
     .card .name {
       font-size: 14px;
       margin-bottom: 8px;
-      color: #ccc; /* grey names */
+      color: #ccc;
     }
     .card .emoji {
       margin-right: 6px;
     }
-    /* Full-page modal */
     #modal {
       position: fixed;
       top: 0; left: 0;
@@ -53,10 +52,11 @@
       padding: 24px;
       overflow-y: auto;
       z-index: 20;
+      box-sizing: border-box;
     }
     #modal h2 {
       margin-top: 0;
-      color: #aaa; /* grey title */
+      color: #aaa;
     }
     #modal p, #modal strong {
       color: #ccc;
@@ -73,7 +73,7 @@
       background: #222;
       border: none;
       border-radius: 8px;
-      color: #ccc; /* grey buttons */
+      color: #ccc;
       cursor: pointer;
       transition: background 0.2s;
     }
@@ -90,13 +90,6 @@
       font-size: 28px;
       cursor: pointer;
     }
-    a {
-      color: #888; /* grey links */
-      text-decoration: none;
-    }
-    a:hover {
-      color: #aaa;
-    }
   </style>
 </head>
 <body>
@@ -107,7 +100,7 @@
   <!-- Full-screen Modal -->
   <div id="modal">
     <button class="close" id="close">×</button>
-    <h2 id="mn">👤 Name</h2>
+    <h2 id="mn"></h2>
     <p><strong>Mood:</strong> <span id="mm"></span></p>
     <p><strong>Prefers:</strong> <span id="mp"></span></p>
     <p id="mb"></p>
@@ -127,8 +120,7 @@
       Object.entries(npcs).forEach(([key, npc]) => {
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = 
-          `<div class="name"><span class="emoji">👤</span>${npc.displayName}</div>`;
+        card.innerHTML = `<div class="emoji">👤</div><div class="name">${npc.displayName}</div>`;
         card.onclick = () => {
           document.getElementById('mn').textContent = `👤 ${npc.displayName}`;
           document.getElementById('mm').textContent = npc.initialMood;
@@ -142,6 +134,7 @@
       document.getElementById('close').onclick = () => {
         document.getElementById('modal').style.display = 'none';
       };
+
       ['buy','sell','give'].forEach(id => {
         document.getElementById(id).onclick = () => alert(`${id.toUpperCase()} action`);
       });
