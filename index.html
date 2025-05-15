@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Burner OS Shell</title>
+  <title>Burner Phone v1</title>
   <style>
     /* Reset & Center */
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -15,17 +15,17 @@
       overflow: hidden;
     }
 
-    /* Phone Frame */
+    /* Phone Frame: full viewport height, max width */
     .phone-frame {
-      width: 360px;
-      height: 640px;
+      width: min(360px, 100vw);
+      height: 100vh;
       background: #222;
       border: 16px solid #444;
       border-top-color: #111;
-      border-radius: 40px;
+      border-radius: 0 0 40px 40px;
       box-shadow: 0 16px 48px rgba(0,0,0,0.8);
       display: grid;
-      grid-template-rows: auto auto 1fr auto;
+      grid-template-rows: auto auto 1fr;
       position: relative;
       overflow: hidden;
     }
@@ -57,8 +57,8 @@
     .title-bar {
       background: #111;
       text-align: center;
-      padding: 6px 0;
-      font-size: 16px;
+      padding: 8px 0;
+      font-size: 18px;
       color: #0af;
       border-bottom: 2px solid #444;
     }
@@ -68,9 +68,10 @@
       background: #1e1e1e;
       display: grid;
       grid-template-columns: repeat(3,1fr);
-      gap: 12px;
-      padding: 16px;
+      gap: 8px;
+      padding: 12px;
       z-index: 1;
+      border-bottom: 2px solid #444;
     }
     .nav button {
       background: #333;
@@ -90,10 +91,10 @@
       border-color: #0af;
       color: #0af;
     }
-    .nav .icon { font-size: 36px; line-height: 1; }
-    .nav .label { margin-top: 6px; font-size: 14px; }
+    .nav .icon { font-size: 32px; line-height: 1; }
+    .nav .label { margin-top: 4px; font-size: 12px; }
 
-    /* Screen */
+    /* Screen Area */
     .screen {
       background: #000;
       display: flex;
