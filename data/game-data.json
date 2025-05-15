@@ -1,8 +1,8 @@
 {
   "player": {
-    "cash": 150,
-    "reputation": 12,
-    "level": 2,
+    "cash": 0,
+    "reputation": 0,
+    "level": 0,
     "inventory": {
       "Candy Bar": 3,
       "Energy Drink": 1,
