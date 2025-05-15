@@ -1,0 +1,23 @@
+{
+  "blaze": {
+    "displayName": "Blaze",
+    "initialMood": "Calm",
+    "drugPreferences": ["Caffeine", "Nicotine"],
+    "behavior": "Chatty until first purchase, then wary.",
+    "inventory": ["Lighter", "Notepad"]
+  },
+  "maya": {
+    "displayName": "Maya",
+    "initialMood": "Energetic",
+    "drugPreferences": ["Sugar", "Caffeine"],
+    "behavior": "Offers discounts if mood > 5.",
+    "inventory": ["Candy Bar", "Energy Drink"]
+  },
+  "viktor": {
+    "displayName": "Viktor",
+    "initialMood": "Grumpy",
+    "drugPreferences": ["Alcohol"],
+    "behavior": "Refuses to talk until mood > 0.",
+    "inventory": ["Bottle", "Keychain"]
+  }
+}
