@@ -2,21 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Contacts</title>
   <style>
-    /* Force entire page to dark background */
-    html, body, #modal {
+    html, body {
       margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #000 !important;
-      color: #fff;
-    }
-    body {
       padding: 16px;
+      width: 100%; height: 100%;
+      background: #000;
+      color: #fff;
       font-family: 'Segoe UI', sans-serif;
+      box-sizing: border-box;
     }
     h1 {
       text-align: center;
@@ -41,15 +37,17 @@
     .card .name {
       font-size: 14px;
       margin-bottom: 8px;
-      color: #0ff;
+      color: #ccc; /* grey names */
     }
-    /* Full-page modal container covering entire viewport */
+    .card .emoji {
+      margin-right: 6px;
+    }
+    /* Full-page modal */
     #modal {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: #111;
       display: none;
       flex-direction: column;
       padding: 24px;
@@ -58,7 +56,7 @@
     }
     #modal h2 {
       margin-top: 0;
-      color: #0af;
+      color: #aaa; /* grey title */
     }
     #modal p, #modal strong {
       color: #ccc;
@@ -75,47 +73,53 @@
       background: #222;
       border: none;
       border-radius: 8px;
-      color: #0ff;
+      color: #ccc; /* grey buttons */
       cursor: pointer;
       transition: background 0.2s;
     }
     #modal .actions button:hover {
       background: #333;
+      color: #fff;
     }
     #modal .close {
       position: absolute;
-      top: 16px;
-      right: 16px;
+      top: 16px; right: 16px;
       background: transparent;
       border: none;
-      color: #fff;
+      color: #ccc;
       font-size: 28px;
       cursor: pointer;
+    }
+    a {
+      color: #888; /* grey links */
+      text-decoration: none;
+    }
+    a:hover {
+      color: #aaa;
     }
   </style>
 </head>
 <body>
 
-  <h1>Contacts</h1>
+  <h1>Contacts 📇</h1>
   <div class="grid" id="contacts"></div>
 
-  <!-- Full-page modal -->
+  <!-- Full-screen Modal -->
   <div id="modal">
     <button class="close" id="close">×</button>
-    <h2 id="mn"></h2>
+    <h2 id="mn">👤 Name</h2>
     <p><strong>Mood:</strong> <span id="mm"></span></p>
     <p><strong>Prefers:</strong> <span id="mp"></span></p>
     <p id="mb"></p>
     <div class="actions">
-      <button id="buy">Buy</button>
-      <button id="sell">Sell</button>
-      <button id="give">Give</button>
+      <button id="buy">💰 Buy</button>
+      <button id="sell">🔄 Sell</button>
+      <button id="give">🎁 Give</button>
     </div>
   </div>
 
   <script>
     (async () => {
-      // Fetch NPC data
       const resp = await fetch('https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/npcs.json');
       const npcs = await resp.json();
 
@@ -123,9 +127,10 @@
       Object.entries(npcs).forEach(([key, npc]) => {
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `<div class="name">${npc.displayName}</div>`;
+        card.innerHTML = 
+          `<div class="name"><span class="emoji">👤</span>${npc.displayName}</div>`;
         card.onclick = () => {
-          document.getElementById('mn').textContent = npc.displayName;
+          document.getElementById('mn').textContent = `👤 ${npc.displayName}`;
           document.getElementById('mm').textContent = npc.initialMood;
           document.getElementById('mp').textContent = npc.drugPreferences.join(', ');
           document.getElementById('mb').textContent = npc.behavior;
@@ -134,13 +139,10 @@
         grid.appendChild(card);
       });
 
-      // Close modal
       document.getElementById('close').onclick = () => {
         document.getElementById('modal').style.display = 'none';
       };
-
-      // Stub actions
-      ['buy', 'sell', 'give'].forEach(id => {
+      ['buy','sell','give'].forEach(id => {
         document.getElementById(id).onclick = () => alert(`${id.toUpperCase()} action`);
       });
     })();
