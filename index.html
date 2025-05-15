@@ -2,21 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Hustle Trap</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Burner OS Shell</title>
+  <!-- Custom CSS -->
+  <style>
+    /* Screen Reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; width: 100%; background: #111; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; }
+    /* Phone Frame */
+    .phone-frame { width: min(360px, 90vw); height: min(640px, 90vh); border: 12px solid #222; border-radius: 32px; background: #333; box-shadow: 0 8px 24px rgba(0,0,0,0.6); overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
+    /* Top Bar */
+    .top-bar { background: #1a1a1a; padding: 8px; display: flex; justify-content: space-around; }
+    .top-bar button { background: transparent; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 4px; }
+    .top-bar button:hover { color: #0af; }
+    /* Game Screen */
+    .screen { background: #121212; display: flex; flex-direction: column; }
+    #game-frame { flex: 1; border: none; width: 100%; height: 100%; }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <!-- Burner OS phone shell -->
-    <div class="phone-frame">
-      <div class="phone-screen">
-        <div id="nav-grid" class="nav-grid"></div>
-        <iframe id="game-frame" scrolling="yes"></iframe>
-      </div>
+  <div class="phone-frame">
+    <div class="top-bar">
+      <button title="Missions" onclick="load('missions')">🗡️</button>
+      <button title="Contacts" onclick="load('contacts')">👥</button>
+      <button title="Inventory" onclick="load('inventory')">🎒</button>
+      <button title="Map" onclick="load('map')">🗺️</button>
+      <button title="Log" onclick="load('log')">📜</button>
+      <button title="Settings" onclick="load('settings')">⚙️</button>
+    </div>
+    <div class="screen">
+      <iframe id="game-frame" scrolling="yes"></iframe>
     </div>
   </div>
 
-  <script src="js/script.js" defer></script>
+  <!-- Inline JS -->
+  <script>
+    const pages = ['missions','contacts','inventory','map','log','settings'];
+    function load(page) {
+      const m = pages.indexOf(page) + 1;
+      window.location.hash = page;
+      document.getElementById('game-frame').src = `https://burner-phone.blogspot.com/p/${page}.html?m=${m}`;
+    }
+    // On load, pick hash or default
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.slice(1);
+      const page = pages.includes(hash) ? hash : pages[0];
+      load(page);
+    });
+  </script>
 </body>
 </html>
