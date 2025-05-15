@@ -107,13 +107,14 @@
       } catch(e) { console.error(e); }
     }
     const pages = {
-      missions: {url:'https://burner-phone.blogspot.com/p/missions.html?m=1'},
-      contacts: {url:'https://burner-phone.blogspot.com/p/contacts.html?m=1'},
-      inventory: {url:'https://burner-phone.blogspot.com/p/inventory.html?m=1'},
-      map: {url:'https://burner-phone.blogspot.com/p/map.html?m=1'},
-      log: {url:'https://burner-phone.blogspot.com/p/log.html?m=1'},
-      settings: {url:'https://burner-phone.blogspot.com/p/settings.html?m=1'}
-    };
+  missions:  { url: 'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/missions.html',  title: 'Missions'  },
+  contacts:  { url: 'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/contacts.html',  title: 'Contacts'  },
+  inventory: { url: 'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/inventory.html', title: 'Inventory' },
+  map:       { url: 'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/map.html',       title: 'Map'        },
+  log:       { url: 'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/log.html',       title: 'Log'        },
+  settings:  { url: 'https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/p/settings.html',  title: 'Settings'   },
+};
+
     function load(key) {
       const pg = pages[key];
       if (pg) document.getElementById('game').src = pg.url;
