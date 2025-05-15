@@ -37,46 +37,34 @@
       margin-bottom: 8px;
       color: #0ff;
     }
-    /* Modal backdrop */
-    .modal-backdrop {
+    /* Full-page modal container */
+    #modal {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      visibility: hidden;
-      z-index: 10;
-    }
-    .modal {
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       background: #111;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 320px;
-      padding: 16px;
-      position: relative;
-      color: #fff;
+      display: none;
+      flex-direction: column;
+      padding: 24px;
+      overflow-y: auto;
+      z-index: 20;
     }
-    .modal h2 {
+    #modal h2 {
       margin-top: 0;
       color: #0af;
     }
-    .modal p, .modal strong {
+    #modal p, #modal strong {
       color: #ccc;
+      margin: 8px 0;
     }
-    .close {
-      position: absolute;
-      top: 8px; right: 8px;
-      background: transparent;
-      border: none;
-      color: #fff;
-      font-size: 24px;
-      cursor: pointer;
+    #modal .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 8px;
     }
-    .actions button {
-      width: 100%;
-      padding: 8px;
-      margin-top: 8px;
+    #modal .actions button {
+      flex: 1;
+      padding: 12px;
       background: #222;
       border: none;
       border-radius: 8px;
@@ -84,8 +72,17 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-    .actions button:hover {
+    #modal .actions button:hover {
       background: #333;
+    }
+    #modal .close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -94,19 +91,17 @@
   <h1>Contacts</h1>
   <div class="grid" id="contacts"></div>
 
-  <!-- Modal -->
-  <div class="modal-backdrop" id="modal">
-    <div class="modal">
-      <button class="close" id="close">×</button>
-      <h2 id="mn"></h2>
-      <p><strong>Mood:</strong> <span id="mm"></span></p>
-      <p><strong>Prefers:</strong> <span id="mp"></span></p>
-      <p id="mb"></p>
-      <div class="actions">
-        <button id="buy">Buy</button>
-        <button id="sell">Sell</button>
-        <button id="give">Give</button>
-      </div>
+  <!-- Full-page modal -->
+  <div id="modal">
+    <button class="close" id="close">×</button>
+    <h2 id="mn"></h2>
+    <p><strong>Mood:</strong> <span id="mm"></span></p>
+    <p><strong>Prefers:</strong> <span id="mp"></span></p>
+    <p id="mb"></p>
+    <div class="actions">
+      <button id="buy">Buy</button>
+      <button id="sell">Sell</button>
+      <button id="give">Give</button>
     </div>
   </div>
 
@@ -126,14 +121,14 @@
           document.getElementById('mm').textContent = npc.initialMood;
           document.getElementById('mp').textContent = npc.drugPreferences.join(', ');
           document.getElementById('mb').textContent = npc.behavior;
-          document.getElementById('modal').style.visibility = 'visible';
+          document.getElementById('modal').style.display = 'flex';
         };
         grid.appendChild(card);
       });
 
       // Close modal
       document.getElementById('close').onclick = () => {
-        document.getElementById('modal').style.visibility = 'hidden';
+        document.getElementById('modal').style.display = 'none';
       };
 
       // Stub actions
