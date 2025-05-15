@@ -13,7 +13,7 @@
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
     }
-    .phone-frame {
+      .phone-frame {
       width: 360px;
       height: 640px;
       background: #222;
@@ -26,6 +26,8 @@
       position: relative;
       overflow: hidden;
       z-index: 1;
+      /* ensure inner content shows bezel */
+      background-clip: padding-box;
     }
     .phone-frame::before {
       content: '';
