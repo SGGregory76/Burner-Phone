@@ -1,0 +1,21 @@
+{
+  "player": {
+    "cash": 150,
+    "reputation": 12,
+    "level": 2,
+    "inventory": {
+      "Candy Bar": 3,
+      "Energy Drink": 1,
+      "Lighter": 1
+    }
+  },
+  "missions": {
+    "m1": { "title": "First Contact", "description": "Meet Blaze at the alley." },
+    "m2": { "title": "Supply Run",   "description": "Pick up the package at 3rd St." }
+  },
+  "npcs": {
+    "blaze":   { "displayName": "Blaze",   "initialMood": "Calm",     "behavior": "Chatty until first purchase." },
+    "maya":    { "displayName": "Maya",    "initialMood": "Energetic", "behavior": "Offers discounts if mood > 5." },
+    "viktor":  { "displayName": "Viktor",  "initialMood": "Grumpy",    "behavior": "Refuses to talk until mood > 0." }
+  }
+}
