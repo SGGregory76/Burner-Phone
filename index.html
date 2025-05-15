@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Burner Phone v1</title>
   <style>
-    /* Reset & Center */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body {
       width: 100vw; height: 100vh;
@@ -14,14 +13,10 @@
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
     }
-
-    /* Phone Frame */
     .phone-frame {
-      width: 360px;
-      height: 640px;
+      width: 360px; height: 640px;
       background: #222;
       border: 16px solid #444;
-      border-top-color: #111;
       border-radius: 40px;
       box-shadow: 0 16px 48px rgba(0,0,0,0.8);
       display: grid;
@@ -30,28 +25,6 @@
       overflow: hidden;
       z-index: 1;
     }
-    .phone-frame::before {
-      /* speaker notch */
-      content: '';
-      position: absolute;
-      top: 12px; left: 50%; transform: translateX(-50%);
-      width: 64px; height: 8px;
-      background: #666;
-      border-radius: 4px;
-      z-index: 3;
-    }
-    .phone-frame::after {
-      /* home indicator */
-      content: '';
-      position: absolute;
-      bottom: 12px; left: 50%; transform: translateX(-50%);
-      width: 100px; height: 6px;
-      background: #666;
-      border-radius: 3px;
-      z-index: 3;
-    }
-
-    /* Title Bar */
     .title-bar {
       background: #111;
       text-align: center;
@@ -61,39 +34,28 @@
       border-bottom: 2px solid #444;
       z-index: 2;
     }
-
-    /* Navigation */
-    .nav {
+    /* Stats Display */
+    .stats {
+      display: flex;
+      justify-content: space-around;
       background: #1e1e1e;
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 8px;
       padding: 12px;
       border-bottom: 2px solid #444;
       z-index: 2;
     }
-    .nav button {
-      background: #333;
-      border: 2px solid #555;
-      border-radius: 14px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+    .stat {
+      text-align: center;
       color: #fff;
-      cursor: pointer;
-      transition: background .2s, border-color .2s;
     }
-    .nav button:hover {
-      background: #444;
-      border-color: #0af;
+    .stat .label {
+      font-size: 12px;
       color: #0af;
+      margin-bottom: 4px;
     }
-    .nav .icon { font-size: 32px; line-height: 1; }
-    .nav .label { margin-top: 4px; font-size: 12px; }
-
-    /* Screen & Page Title */
+    .stat .value {
+      font-size: 16px;
+      color: #fff;
+    }
     .screen {
       background: #000;
       display: flex; flex-direction: column;
@@ -107,7 +69,7 @@
       font-size: 16px;
       color: #0af;
       border-bottom: 1px solid #444;
-      margin-top: -16px;  /* tucked under bezel */
+      margin-top: -16px;
       position: relative;
     }
     iframe {
@@ -120,56 +82,30 @@
 <body>
   <div class="phone-frame">
     <div class="title-bar">Burner Phone v1</div>
-    <div class="nav">
-      <button onclick="load('missions')">
-        <span class="icon">🗡️</span><span class="label">Missions</span>
-      </button>
-      <button onclick="load('contacts')">
-        <span class="icon">👥</span><span class="label">Contacts</span>
-      </button>
-      <button onclick="load('inventory')">
-        <span class="icon">🎒</span><span class="label">Inventory</span>
-      </button>
-      <button onclick="load('map')">
-        <span class="icon">🗺️</span><span class="label">Map</span>
-      </button>
-      <button onclick="load('log')">
-        <span class="icon">📜</span><span class="label">Log</span>
-      </button>
-      <button onclick="load('settings')">
-        <span class="icon">⚙️</span><span class="label">Settings</span>
-      </button>
+    <div class="stats">
+      <div class="stat"><div class="label">Cash</div><div class="value" id="stat-cash">0</div></div>
+      <div class="stat"><div class="label">Reputation</div><div class="value" id="stat-rep">0</div></div>
+      <div class="stat"><div class="label">Level</div><div class="value" id="stat-level">1</div></div>
     </div>
     <div class="screen">
       <div class="page-title" id="page-title">Missions</div>
-      <iframe id="game"></iframe>
+      <iframe id="game" src="https://burner-phone.blogspot.com/p/missions.html?m=1"></iframe>
     </div>
   </div>
 
   <script>
-    const pages = {
-      missions:  { url: 'https://burner-phone.blogspot.com/p/missions.html?m=1', title: 'Missions' },
-      contacts:  { url: 'https://burner-phone.blogspot.com/p/contacts.html?m=1', title: 'Contacts' },
-      inventory: { url: 'https://burner-phone.blogspot.com/p/inventory.html?m=1', title: 'Inventory' },
-      map:       { url: 'https://burner-phone.blogspot.com/p/map.html?m=1', title: 'Map' },
-      log:       { url: 'https://burner-phone.blogspot.com/p/log.html?m=1', title: 'Log' },
-      settings:  { url: 'https://burner-phone.blogspot.com/p/settings.html?m=1', title: 'Settings' }
-    };
-
-    function load(key) {
-      const pg = pages[key];
-      if (!pg) return;
-      document.getElementById('page-title').textContent = pg.title;
-      document.getElementById('game').src = pg.url;
-    }
-
-    // On page load, check ?m= query param or default to missions
-    window.addEventListener('load', () => {
-      const m = parseInt(new URLSearchParams(location.search).get('m'));
-      const keys = Object.keys(pages);
-      const idx = (m >= 1 && m <= keys.length) ? m - 1 : 0;
-      load(keys[idx]);
-    });
+    // Load stats from game-data.json
+    (async()=>{
+      try {
+        const res = await fetch('https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/game-data.json');
+        const game = await res.json();
+        document.getElementById('stat-cash').textContent = game.player.cash;
+        document.getElementById('stat-rep').textContent = game.player.reputation;
+        document.getElementById('stat-level').textContent = game.player.level;
+      } catch(e) {
+        console.error(e);
+      }
+    })();
   </script>
 </body>
 </html>
