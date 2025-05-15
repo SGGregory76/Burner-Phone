@@ -10,52 +10,73 @@
     html, body {
       width: 100vw; height: 100vh;
       display: flex; align-items: center; justify-content: center;
-      background: #000; /* deeper background */
+      background: #000;
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
     }
 
-    /* Phone Frame with contrast bezel */
+    /* Phone Frame */
     .phone-frame {
       width: 360px;
       height: 640px;
-      background: #222; /* darker frame */
-      border: 14px solid #444; /* lighter border for contrast */
+      background: #222;
+      border: 16px solid #444;
+      border-top-color: #111;
       border-radius: 40px;
       box-shadow: 0 16px 48px rgba(0,0,0,0.8);
       display: grid;
-      grid-template-rows: auto 1fr;
+      grid-template-rows: auto auto 1fr auto;
       position: relative;
       overflow: hidden;
     }
 
-    /* Speaker notch highlight */
+    /* Speaker Cutout */
     .phone-frame::before {
       content: '';
       position: absolute;
       top: 12px;
       left: 50%; transform: translateX(-50%);
       width: 64px; height: 8px;
-      background: #666; /* more distinct speaker */
+      background: #666;
       border-radius: 4px;
       z-index: 2;
     }
+    /* Home Indicator */
+    .phone-frame::after {
+      content: '';
+      position: absolute;
+      bottom: 12px;
+      left: 50%; transform: translateX(-50%);
+      width: 100px; height: 6px;
+      background: #666;
+      border-radius: 3px;
+      z-index: 2;
+    }
 
-    /* Top Navigation Bar */
+    /* Title Bar */
+    .title-bar {
+      background: #111;
+      text-align: center;
+      padding: 6px 0;
+      font-size: 16px;
+      color: #0af;
+      border-bottom: 2px solid #444;
+    }
+
+    /* Navigation */
     .nav {
-      background: #1a1a1a; /* higher contrast */
+      background: #1e1e1e;
       display: grid;
       grid-template-columns: repeat(3,1fr);
       gap: 12px;
       padding: 16px;
       z-index: 1;
-      border-bottom: 2px solid #444;
     }
     .nav button {
       background: #333;
       border: 2px solid #555;
       border-radius: 14px;
-      padding: 14px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -72,32 +93,26 @@
     .nav .icon { font-size: 36px; line-height: 1; }
     .nav .label { margin-top: 6px; font-size: 14px; }
 
-    /* Screen Area */
+    /* Screen */
     .screen {
-      background: #000; /* deep black screen */
+      background: #000;
       display: flex;
       flex-direction: column;
-      padding: 4px; /* bezel padding */
-    }
-    .screen::before {
-      content: '';
-      position: absolute;
-      bottom: 12px; left: 50%; transform: translateX(-50%);
-      width: 80px; height: 6px;
-      background: #666;
-      border-radius: 3px;
+      padding: 4px;
+      position: relative;
     }
     iframe {
       flex: 1;
       width: 100%; height: 100%;
       border: none;
-      border-radius: 8px; /* slight rounding inside screen */
+      border-radius: 8px;
       background: #000;
     }
   </style>
 </head>
 <body>
   <div class="phone-frame">
+    <div class="title-bar">Burner Phone v1</div>
     <div class="nav">
       <button onclick="load('missions')"><span class="icon">🗡️</span><span class="label">Missions</span></button>
       <button onclick="load('contacts')"><span class="icon">👥</span><span class="label">Contacts</span></button>
