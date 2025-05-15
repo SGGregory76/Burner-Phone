@@ -5,15 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Burner OS Shell</title>
   <style>
-    /* Reset & center */
     html, body { margin:0; padding:0; width:100vw; height:100vh; display:flex; justify-content:center; align-items:center; background:#111; }
-    /* Phone shell */
     .phone-frame { width:360px; max-width:90vw; height:640px; max-height:90vh; border:12px solid #222; border-radius:32px; background:#333; box-shadow:0 8px 24px rgba(0,0,0,0.6); display:flex; flex-direction:column; overflow:hidden; }
-    /* Nav */
     .nav { display:flex; background:#1e1e1e; padding:8px; justify-content:space-around; }
     .nav button { background:transparent; border:none; color:#fff; font-size:24px; cursor:pointer; }
     .nav button:hover { color:#0af; }
-    /* Screen */
     .screen { flex:1; background:#121212; }
     iframe { width:100%; height:100%; border:none; }
   </style>
@@ -29,25 +25,28 @@
       <button onclick="go('settings')">⚙️</button>
     </div>
     <div class="screen">
-      <iframe id="game" src=""></iframe>
+      <iframe id="game"></iframe>
     </div>
   </div>
 
   <script>
+    // Full absolute URLs for each page
     const pages = {
-      missions:  '/p/missions.html',
-      contacts:  '/p/contacts.html',
-      inventory: '/p/inventory.html',
-      map:       '/p/map.html',
-      log:       '/p/log.html',
-      settings:  '/p/settings.html'
+      missions:  'https://burner-phone.blogspot.com/p/missions.html?m=1',
+      contacts:  'https://burner-phone.blogspot.com/p/contacts.html?m=1',
+      inventory: 'https://burner-phone.blogspot.com/p/inventory.html?m=1',
+      map:       'https://burner-phone.blogspot.com/p/map.html?m=1',
+      log:       'https://burner-phone.blogspot.com/p/log.html?m=1',
+      settings:  'https://burner-phone.blogspot.com/p/settings.html?m=1'
     };
+
     function go(key) {
-      const path = pages[key];
-      if (!path) return;
-      document.getElementById('game').src = path;
+      const url = pages[key];
+      if (!url) return;
+      document.getElementById('game').src = url;
     }
-    // Auto-load Missions on first load
+
+    // Auto-load missions on startup
     window.addEventListener('load', () => go('missions'));
   </script>
 </body>
