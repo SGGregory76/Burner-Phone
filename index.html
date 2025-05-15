@@ -98,9 +98,54 @@
     (async () => {
       try {
         // After (cache-busting):
-const res = await fetch(
-  `https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/game-data.json?cb=${Date.now()}`
-);
+{
+  "player": {
+    "cash": 0,
+    "reputation": 0,
+    "level": 0,
+    "inventory": {
+      "Candy Bar": 3,
+      "Energy Drink": 1,
+      "Lighter": 1,
+      "Notepad": 1
+    }
+  },
+  "missions": {
+    "m1": {
+      "title": "First Contact",
+      "description": "Meet Blaze at the alley before sundown.",
+      "reward": { "cash": 50, "rep": 5 }
+    },
+    "m2": {
+      "title": "Supply Run",
+      "description": "Pick up the package at 3rd Street Market.",
+      "reward": { "cash": 75, "rep": 8 }
+    }
+  },
+  "npcs": {
+    "blaze": {
+      "displayName": "Blaze",
+      "initialMood": "Calm",
+      "behavior": "Chatty until first purchase.",
+      "drugPreferences": ["Caffeine", "Nicotine"],
+      "inventory": ["Lighter", "Notepad"]
+    },
+    "maya": {
+      "displayName": "Maya",
+      "initialMood": "Energetic",
+      "behavior": "Offers discounts if mood > 5.",
+      "drugPreferences": ["Sugar", "Caffeine"],
+      "inventory": ["Candy Bar", "Energy Drink"]
+    },
+    "viktor": {
+      "displayName": "Viktor",
+      "initialMood": "Grumpy",
+      "behavior": "Refuses to talk until mood > 0.",
+      "drugPreferences": ["Alcohol"],
+      "inventory": ["Bottle", "Keychain"]
+    }
+  }
+}
         const game = await res.json();
         document.getElementById('stat-cash').textContent = game.player.cash;
         document.getElementById('stat-rep').textContent = game.player.reputation;
