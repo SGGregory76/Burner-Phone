@@ -2,53 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Burner OS Shell</title>
-  <!-- Custom CSS -->
   <style>
-    /* Screen Reset */
-    *, *::before, *::after { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; height: 100%; width: 100%; background: #111; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; justify-content: center; }
-    /* Phone Frame */
-    .phone-frame { width: min(360px, 90vw); height: min(640px, 90vh); border: 12px solid #222; border-radius: 32px; background: #333; box-shadow: 0 8px 24px rgba(0,0,0,0.6); overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
-    /* Top Bar */
-    .top-bar { background: #1a1a1a; padding: 8px; display: flex; justify-content: space-around; }
-    .top-bar button { background: transparent; border: none; color: #fff; font-size: 24px; cursor: pointer; padding: 4px; }
-    .top-bar button:hover { color: #0af; }
-    /* Game Screen */
-    .screen { background: #121212; display: flex; flex-direction: column; }
-    #game-frame { flex: 1; border: none; width: 100%; height: 100%; }
+    /* Reset & center */
+    html, body { margin:0; padding:0; width:100vw; height:100vh; display:flex; justify-content:center; align-items:center; background:#111; }
+    /* Phone shell */
+    .phone-frame { width:360px; max-width:90vw; height:640px; max-height:90vh; border:12px solid #222; border-radius:32px; background:#333; box-shadow:0 8px 24px rgba(0,0,0,0.6); display:flex; flex-direction:column; overflow:hidden; }
+    /* Nav */
+    .nav { display:flex; background:#1e1e1e; padding:8px; justify-content:space-around; }
+    .nav button { background:transparent; border:none; color:#fff; font-size:24px; cursor:pointer; }
+    .nav button:hover { color:#0af; }
+    /* Screen */
+    .screen { flex:1; background:#121212; }
+    iframe { width:100%; height:100%; border:none; }
   </style>
 </head>
 <body>
   <div class="phone-frame">
-    <div class="top-bar">
-      <button title="Missions" onclick="load('missions')">🗡️</button>
-      <button title="Contacts" onclick="load('contacts')">👥</button>
-      <button title="Inventory" onclick="load('inventory')">🎒</button>
-      <button title="Map" onclick="load('map')">🗺️</button>
-      <button title="Log" onclick="load('log')">📜</button>
-      <button title="Settings" onclick="load('settings')">⚙️</button>
+    <div class="nav">
+      <button onclick="go('missions')">🗡️</button>
+      <button onclick="go('contacts')">👥</button>
+      <button onclick="go('inventory')">🎒</button>
+      <button onclick="go('map')">🗺️</button>
+      <button onclick="go('log')">📜</button>
+      <button onclick="go('settings')">⚙️</button>
     </div>
     <div class="screen">
-      <iframe id="game-frame" scrolling="yes"></iframe>
+      <iframe id="game" src=""></iframe>
     </div>
   </div>
 
-  <!-- Inline JS -->
   <script>
-    const pages = ['missions','contacts','inventory','map','log','settings'];
-    function load(page) {
-      const m = pages.indexOf(page) + 1;
-      window.location.hash = page;
-      document.getElementById('game-frame').src = `https://burner-phone.blogspot.com/p/${page}.html?m=${m}`;
+    const pages = {
+      missions:  '/p/missions.html',
+      contacts:  '/p/contacts.html',
+      inventory: '/p/inventory.html',
+      map:       '/p/map.html',
+      log:       '/p/log.html',
+      settings:  '/p/settings.html'
+    };
+    function go(key) {
+      const path = pages[key];
+      if (!path) return;
+      document.getElementById('game').src = path;
     }
-    // On load, pick hash or default
-    window.addEventListener('DOMContentLoaded', () => {
-      const hash = window.location.hash.slice(1);
-      const page = pages.includes(hash) ? hash : pages[0];
-      load(page);
-    });
+    // Auto-load Missions on first load
+    window.addEventListener('load', () => go('missions'));
   </script>
 </body>
 </html>
