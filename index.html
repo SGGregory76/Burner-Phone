@@ -97,7 +97,10 @@
     // Fetch game data and populate stats
     (async () => {
       try {
-        const res = await fetch('https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/game-data.json');
+        // After (cache-busting):
+const res = await fetch(
+  `https://cdn.jsdelivr.net/gh/SGGregory76/Burner-Phone@main/data/game-data.json?cb=${Date.now()}`
+);
         const game = await res.json();
         document.getElementById('stat-cash').textContent = game.player.cash;
         document.getElementById('stat-rep').textContent = game.player.reputation;
